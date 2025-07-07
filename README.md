@@ -1,2 +1,2 @@
 # jenkins-test
-Zmiana testowa - sprawdzenie webhooka
+Zmiana testowa - sprawdzenie webhookaj
