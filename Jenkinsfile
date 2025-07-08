@@ -17,3 +17,10 @@ stage('Docker build') {
     sh 'docker build -t myapp .'
   }
 }
+stage('Run container test') {
+  steps {
+    sh '''
+      docker run --rm myapp echo "Aplikacja się uruchamia"
+    '''
+  }
+}
