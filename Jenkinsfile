@@ -24,3 +24,4 @@ stage('Run container test') {
     '''
   }
 }
+docker run --rm myapp node app.js
