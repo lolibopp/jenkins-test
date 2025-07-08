@@ -1,15 +1,19 @@
 pipeline {
-  agent any
-
-  triggers {
-    githubPush()
+  agent {
+    docker {
+      image 'node:18'
+    }
   }
-
   stages {
-    stage('Test hook') {
+    stage('Test') {
       steps {
-        echo 'Webhook działa!'
+        sh 'node -v'
       }
     }
+  }
+}
+stage('Docker build') {
+  steps {
+    sh 'docker build -t myapp .'
   }
 }
