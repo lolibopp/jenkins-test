@@ -1,5 +1,164 @@
-body { font-family: sans-serif; padding: 2rem; }
-.products, .cart { list-style: none; padding: 0; }
-.products li, .cart li { margin: .5rem 0; }
-button { margin-left: 1rem; }
-header { margin-bottom: 1rem; }
+/* 1. Google Font + wartości domyślne */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+
+:root {
+  --primary-color: #4a90e2;
+  --secondary-color: #f5f7fa;
+  --accent-color: #ff6b6b;
+  --text-color: #333;
+  --bg-light: #fff;
+  --border-radius: 8px;
+  --max-width: 800px;
+}
+
+/* 2. Reset i podstawy */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--secondary-color);
+  color: var(--text-color);
+  line-height: 1.6;
+}
+
+/* 3. Layout kontenera */
+.container {
+  max-width: var(--max-width);
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+/* 4. Nagłówek */
+header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+header h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--primary-color);
+}
+
+/* 5. Lista produktów */
+.products {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1.5rem;
+}
+
+.products li {
+  background: var(--bg-light);
+  padding: 1rem;
+  border-radius: var(--border-radius);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.products li strong {
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+}
+
+.products li .price {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--accent-color);
+  margin-bottom: 1rem;
+}
+
+.products li form {
+  margin-top: auto;
+  text-align: right;
+}
+
+.products li button {
+  background: var(--primary-color);
+  border: none;
+  color: #fff;
+  padding: 0.5rem 1rem;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.products li button:hover {
+  background: #407ccf;
+}
+
+/* 6. Koszyk */
+.cart {
+  list-style: none;
+  padding: 0;
+  margin-bottom: 1rem;
+}
+
+.cart li {
+  background: var(--bg-light);
+  margin-bottom: 0.5rem;
+  padding: 0.75rem 1rem;
+  border-radius: var(--border-radius);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.cart-total {
+  text-align: right;
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+/* 7. Ogólne przyciski i linki */
+button, .clear-btn, .continue-btn {
+  font-family: inherit;
+}
+
+.clear-btn,
+.continue-btn {
+  display: inline-block;
+  background: var(--accent-color);
+  color: #fff;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.3s;
+  margin-right: 0.5rem;
+}
+
+.clear-btn:hover,
+.continue-btn:hover {
+  background: #e65555;
+}
+
+a {
+  color: var(--primary-color);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* 8. Responsywność */
+@media (max-width: 600px) {
+  header h1 {
+    font-size: 2rem;
+  }
+  
+  .products {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
+}
