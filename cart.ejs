@@ -1,0 +1,12 @@
+<% layout('layout') %>
+<h2>Your Cart</h2>
+<ul class="cart">
+  <% cart.forEach((i, idx) => { %>
+    <li><%= i.name %> – <%= i.price %> PLN</li>
+  <% }) %>
+</ul>
+<p>Total: <strong><%= total %> PLN</strong></p>
+<form action="/cart/clear" method="post">
+  <button>Clear Cart</button>
+</form>
+<a href="/">Continue Shopping</a>
