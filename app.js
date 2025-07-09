@@ -1,14 +1,16 @@
-const expressLayouts = require('express-ejs-layouts');
-app.use(expressLayouts);
-app.set('layout', 'layout');    // plik views/layout.ejs
-app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, 'views'));
 const express = require('express');
+const expressLayouts = require('express-ejs-layouts');
 const bodyParser = require('body-parser');
+const path = require('path');
+
 const app = express();
 
-// konfiguracja
+// konfiguracja EJS + layoutów
+app.use(expressLayouts);
+app.set('layout', 'layout');
 app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
+
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ extended: false }));
 
@@ -20,12 +22,11 @@ const products = [
 ];
 let cart = [];
 
-// Strona główna → lista produktów
+// routing
 app.get('/', (req, res) => {
   res.render('index', { products });
 });
 
-// Dodaj do koszyka
 app.post('/cart/add', (req, res) => {
   const id = parseInt(req.body.productId, 10);
   const item = products.find(p => p.id === id);
@@ -33,18 +34,18 @@ app.post('/cart/add', (req, res) => {
   res.redirect('/cart');
 });
 
-// Wyświetl koszyk
 app.get('/cart', (req, res) => {
   const total = cart.reduce((sum, i) => sum + i.price, 0);
   res.render('cart', { cart, total });
 });
 
-// Opróżnij koszyk
 app.post('/cart/clear', (req, res) => {
   cart = [];
   res.redirect('/');
 });
 
-// Start serwera
+// start serwera
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, ()=> console.log(`Store listening on ${PORT}`));
+app.listen(PORT, () =>
+  console.log(`Store listening on http://localhost:${PORT}`)
+);
