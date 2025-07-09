@@ -17,9 +17,9 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 // 3) Dane w pamięci
 const products = [
-  { id: 1, name: 'Kubek JavaScript', price: 25 },
-  { id: 2, name: 'T-Shirt Node.js', price: 75 },
-  { id: 3, name: 'Czapka Dev', price: 40 }
+  { id: 1, name: 'Kubek', price: 25 },
+  { id: 2, name: 'T-Shirt', price: 75 },
+  { id: 3, name: 'Czapka', price: 40 }
 ];
 let cart = [];
 
