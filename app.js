@@ -1,3 +1,8 @@
+const expressLayouts = require('express-ejs-layouts');
+app.use(expressLayouts);
+app.set('layout', 'layout');    // plik views/layout.ejs
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
 const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
