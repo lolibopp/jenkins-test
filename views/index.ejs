@@ -1,9 +1,10 @@
-<% layout('layout') %>
+<%- layout('layout') %>
+
 <ul class="products">
   <% products.forEach(p => { %>
     <li>
       <strong><%= p.name %></strong> – <%= p.price %> PLN
-      <form action="/cart/add" method="post">
+      <form action="/cart/add" method="post" style="display:inline">
         <input type="hidden" name="productId" value="<%= p.id %>">
         <button>Add to cart</button>
       </form>
