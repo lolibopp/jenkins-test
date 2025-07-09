@@ -1,47 +1,45 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-
 const app = express();
-app.use(bodyParser.json());
 
-let tasks = [];
-let nextId = 1;
+// konfiguracja
+app.set('view engine', 'ejs');
+app.use(express.static('public'));
+app.use(bodyParser.urlencoded({ extended: false }));
 
-// GET / - sprawność API
+// dane w pamięci
+const products = [
+  { id: 1, name: 'Kubek JavaScript', price: 25 },
+  { id: 2, name: 'T-Shirt Node.js', price: 75 },
+  { id: 3, name: 'Czapka Dev', price: 40 }
+];
+let cart = [];
+
+// Strona główna → lista produktów
 app.get('/', (req, res) => {
-  res.send('🎉 API działa! Użyj /tasks');
+  res.render('index', { products });
 });
 
-// GET /tasks - lista zadań
-app.get('/tasks', (req, res) => {
-  res.json(tasks);
+// Dodaj do koszyka
+app.post('/cart/add', (req, res) => {
+  const id = parseInt(req.body.productId, 10);
+  const item = products.find(p => p.id === id);
+  if (item) cart.push(item);
+  res.redirect('/cart');
 });
 
-// POST /tasks - dodaj nowe zadanie { "title": "Kup mleko" }
-app.post('/tasks', (req, res) => {
-  const { title } = req.body;
-  if (!title) return res.status(400).json({ error: 'title jest wymagane' });
-  const task = { id: nextId++, title, done: false };
-  tasks.push(task);
-  res.status(201).json(task);
+// Wyświetl koszyk
+app.get('/cart', (req, res) => {
+  const total = cart.reduce((sum, i) => sum + i.price, 0);
+  res.render('cart', { cart, total });
 });
 
-// PUT /tasks/:id - oznacz wykonane
-app.put('/tasks/:id', (req, res) => {
-  const id = parseInt(req.params.id, 10);
-  const task = tasks.find(t => t.id === id);
-  if (!task) return res.status(404).json({ error: 'Nie znaleziono zadania' });
-  task.done = req.body.done === true;
-  res.json(task);
-});
-
-// DELETE /tasks/:id - usuń zadanie
-app.delete('/tasks/:id', (req, res) => {
-  const id = parseInt(req.params.id, 10);
-  tasks = tasks.filter(t => t.id !== id);
-  res.status(204).end();
+// Opróżnij koszyk
+app.post('/cart/clear', (req, res) => {
+  cart = [];
+  res.redirect('/');
 });
 
 // Start serwera
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Server start na porcie ${PORT}`));
+app.listen(PORT, ()=> console.log(`Store listening on ${PORT}`));
