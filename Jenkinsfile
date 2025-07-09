@@ -2,8 +2,8 @@ pipeline {
   agent any
 
   environment {
-    DOCKERHUB_CREDENTIALS = 'docker-hub-creds'      // ID poświadczeń w Jenkinsie
-    IMAGE_NAME            = 'twojnick/myapp'       // zamień na swój Docker Hub login
+    DOCKERHUB_CREDENTIALS = credentials('docker-hub-friend-creds')
+    IMAGE_NAME            = 'kacwery/myapp'
   }
 
   stages {
@@ -16,7 +16,7 @@ pipeline {
     stage('Build Docker Image') {
       steps {
         script {
-          // Tworzymy obraz z tagiem numeru builda
+          // budujemy obraz i zapisujemy w globalnej zmiennej
           dockerImage = docker.build("${IMAGE_NAME}:${env.BUILD_NUMBER}")
         }
       }
@@ -24,23 +24,34 @@ pipeline {
 
     stage('Run Container Test') {
       steps {
-        // Uruchamiamy kontener i odpalamy aplikację Node.js
-        sh "docker run --rm ${IMAGE_NAME}:${env.BUILD_NUMBER} node app.js"
+        script {
+          // wewnątrz kontenera odpali się node app.js
+          docker.image("${IMAGE_NAME}:${env.BUILD_NUMBER}").inside {
+            sh 'node app.js'
+          }
+        }
       }
     }
 
     stage('Push to Docker Hub') {
       when {
-        expression { return true }  // ustaw na false, jeśli chcesz wyłączyć etap
+        expression { return true }
       }
       steps {
         script {
-          // Logujemy i wypychamy obraz do rejestru
+          // logujemy się i wypychamy dwa tagi: BUILD_NUMBER i latest
           docker.withRegistry('https://index.docker.io/v1/', DOCKERHUB_CREDENTIALS) {
-            dockerImage.push()
+            dockerImage.push("${env.BUILD_NUMBER}")
+            dockerImage.push('latest')
           }
         }
       }
+    }
+  }
+
+  post {
+    always {
+      cleanWs()
     }
   }
 }
