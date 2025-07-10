@@ -2,8 +2,8 @@ pipeline {
   agent any
 
   environment {
-    DOCKERHUB_CREDENTIALS = credentials('docker-hub-friend-creds')
-    IMAGE_NAME            = 'kacwery/myapp'
+    DOCKERHUB_CREDENTIALS = credentials('docker-hub-my-creds')
+    IMAGE_NAME            = 'lolibop/myapp'
   }
 
   stages {
